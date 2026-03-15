@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { db } from "@/lib/db";
 import { Hero } from "@/components/shop/hero";
 import { BrandStory } from "@/components/shop/brand-story";
