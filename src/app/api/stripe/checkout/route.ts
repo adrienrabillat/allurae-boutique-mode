@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
             productId: item.id,
             quantity: item.quantity,
             priceAtPurchase: item.price,
+            size: item.size || null,
           })),
         },
       },

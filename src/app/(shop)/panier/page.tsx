@@ -26,11 +26,12 @@ export default function CartPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: items.map((item) => ({
-            id: item.id,
+            id: item.productId || item.id,
             name: item.name,
             price: item.salePrice ?? item.price,
             quantity: item.quantity,
             imageUrl: item.imageUrl,
+            size: item.size || null,
           })),
         }),
       });
