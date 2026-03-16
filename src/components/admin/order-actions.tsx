@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Truck, Package } from "lucide-react";
+import { Truck, Package, ExternalLink } from "lucide-react";
 
 interface Props {
   order: any;
@@ -31,13 +31,22 @@ export function OrderActions({ order }: Props) {
 
   const generateShippingLabel = async () => {
     setLoading(true);
+    setShippingResult(null);
     try {
       const res = await fetch(`/api/orders/${order.id}/shipping`, {
         method: "POST",
       });
       const data = await res.json();
       if (data.success) {
-        setShippingResult("Étiquette générée avec succès !");
+        if (data.fallback) {
+          setShippingResult(
+            "⚠️ API Boxtal indisponible — commande marquée expédiée. Créez l'étiquette manuellement sur boxtal.com"
+          );
+        } else {
+          setShippingResult(
+            `✅ Étiquette générée ! Transporteur: ${data.carrier || "N/A"}`
+          );
+        }
         if (data.labelUrl) {
           window.open(data.labelUrl, "_blank");
         }
@@ -73,19 +82,32 @@ export function OrderActions({ order }: Props) {
               className="inline-flex items-center gap-2 bg-allurae-terracotta text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors disabled:opacity-50"
             >
               <Package size={16} />
-              Générer Étiquette (Boxtal)
+              {loading ? "Génération en cours..." : "Générer Étiquette (Boxtal)"}
             </button>
           </>
         )}
 
         {order.status === "SHIPPED" && (
-          <button
-            onClick={() => updateStatus("DELIVERED")}
-            disabled={loading}
-            className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors disabled:opacity-50"
-          >
-            Marquer livré
-          </button>
+          <>
+            <button
+              onClick={() => updateStatus("DELIVERED")}
+              disabled={loading}
+              className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors disabled:opacity-50"
+            >
+              Marquer livré
+            </button>
+            {order.labelUrl && (
+              <a
+                href={order.labelUrl.startsWith("http") ? order.labelUrl : `/admin/orders/${order.id}/label`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              >
+                <ExternalLink size={16} />
+                Voir l&apos;étiquette
+              </a>
+            )}
+          </>
         )}
 
         {order.status === "PENDING" && (
@@ -101,7 +123,10 @@ export function OrderActions({ order }: Props) {
 
       {order.trackingNumber && (
         <p className="text-sm text-gray-600 mt-4">
-          N° de suivi : <span className="font-mono font-medium">{order.trackingNumber}</span>
+          N° de suivi :{" "}
+          <span className="font-mono font-medium">
+            {order.trackingNumber}
+          </span>
         </p>
       )}
 

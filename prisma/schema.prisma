@@ -120,6 +120,7 @@ model Order {
   shippingCountry  String?
   shippingPhone    String?
   trackingNumber   String?
+  labelUrl         String?
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
 
