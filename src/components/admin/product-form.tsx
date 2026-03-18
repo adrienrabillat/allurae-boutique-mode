@@ -184,8 +184,8 @@ export function ProductForm({ categories, product }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-8 max-w-2xl space-y-6">
-      <div className="grid grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-4 sm:p-8 max-w-2xl space-y-5 sm:space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
           <input
@@ -218,7 +218,7 @@ export function ProductForm({ categories, product }: Props) {
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Prix (€)</label>
           <input
@@ -305,7 +305,7 @@ export function ProductForm({ categories, product }: Props) {
 
         {/* Preview grid */}
         {form.images.length > 0 && (
-          <div className="grid grid-cols-4 gap-3 mb-4">
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3 mb-4">
             {form.images.map((url: string, index: number) => (
               <div key={`${url}-${index}`} className="relative group">
                 <div
@@ -430,7 +430,7 @@ export function ProductForm({ categories, product }: Props) {
         />
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
         <label className="flex items-center gap-2 text-sm text-gray-700">
           <input
             type="checkbox"
@@ -453,18 +453,18 @@ export function ProductForm({ categories, product }: Props) {
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
-      <div className="flex gap-4">
+      <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
         <button
           type="submit"
           disabled={loading}
-          className="bg-allurae-terracotta text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors disabled:opacity-50"
+          className="bg-allurae-terracotta text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors disabled:opacity-50 w-full sm:w-auto"
         >
           {loading ? "Enregistrement..." : isEdit ? "Mettre à jour" : "Créer le produit"}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2.5 rounded-lg text-sm text-gray-600 border border-gray-300 hover:bg-gray-50 transition-colors"
+          className="px-6 py-2.5 rounded-lg text-sm text-gray-600 border border-gray-300 hover:bg-gray-50 transition-colors w-full sm:w-auto"
         >
           Annuler
         </button>

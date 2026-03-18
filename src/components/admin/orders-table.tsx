@@ -96,61 +96,72 @@ export function OrdersTable({ initialOrders }: { initialOrders: Order[] }) {
     return sortConfig.direction === "asc" ? <ChevronUp size={14} /> : <ChevronDown size={14} />;
   };
 
+  const statusColor = (status: string) => {
+    switch (status) {
+      case "PAID": return "bg-green-100 text-green-700";
+      case "SHIPPED": return "bg-blue-100 text-blue-700";
+      case "DELIVERED": return "bg-purple-100 text-purple-700";
+      case "PENDING": return "bg-yellow-100 text-yellow-700";
+      default: return "bg-red-100 text-red-700";
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
-        <div className="relative max-w-md w-full">
+      <div className="p-3 sm:p-4 border-b border-gray-100 bg-gray-50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+        <div className="relative w-full sm:max-w-md">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-allurae-terracotta focus:ring-1 focus:ring-allurae-terracotta sm:text-sm"
-            placeholder="Rechercher par N° commande ou email..."
+            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-allurae-terracotta focus:ring-1 focus:ring-allurae-terracotta text-sm"
+            placeholder="Rechercher par N° ou email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 text-right sm:text-left flex-shrink-0">
           {filteredAndSortedOrders.length} commande(s)
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      {/* Desktop table */}
+      <div className="hidden lg:block overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
-              <th 
+              <th
                 className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 select-none group"
                 onClick={() => handleSort("id")}
               >
                 <div className="flex items-center gap-1">Commande <SortIcon columnKey="id" /></div>
               </th>
-              <th 
+              <th
                 className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 select-none group"
                 onClick={() => handleSort("userEmail")}
               >
                 <div className="flex items-center gap-1">Client <SortIcon columnKey="userEmail" /></div>
               </th>
-              <th 
+              <th
                 className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 select-none group"
                 onClick={() => handleSort("itemsCount")}
               >
                 <div className="flex items-center gap-1">Articles <SortIcon columnKey="itemsCount" /></div>
               </th>
-              <th 
+              <th
                 className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 select-none group"
                 onClick={() => handleSort("totalAmount")}
               >
                 <div className="flex items-center gap-1">Montant <SortIcon columnKey="totalAmount" /></div>
               </th>
-              <th 
+              <th
                 className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 select-none group"
                 onClick={() => handleSort("status")}
               >
                 <div className="flex items-center gap-1">Statut <SortIcon columnKey="status" /></div>
               </th>
-              <th 
+              <th
                 className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 select-none group"
                 onClick={() => handleSort("createdAt")}
               >
@@ -161,7 +172,7 @@ export function OrdersTable({ initialOrders }: { initialOrders: Order[] }) {
           </thead>
           <tbody>
             {filteredAndSortedOrders.map((order) => (
-              <tr key={order.id} className="border-b border-gray-50 hover:bg-bg-gray-50">
+              <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm font-mono text-gray-600">
                   #{order.id.slice(-8)}
                 </td>
@@ -176,19 +187,7 @@ export function OrdersTable({ initialOrders }: { initialOrders: Order[] }) {
                   {formatPrice(order.totalAmount)}
                 </td>
                 <td className="px-6 py-4">
-                  <span
-                    className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${
-                      order.status === "PAID"
-                        ? "bg-green-100 text-green-700"
-                        : order.status === "SHIPPED"
-                        ? "bg-blue-100 text-blue-700"
-                        : order.status === "DELIVERED"
-                        ? "bg-purple-100 text-purple-700"
-                        : order.status === "PENDING"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
+                  <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${statusColor(order.status)}`}>
                     {order.status}
                   </span>
                 </td>
@@ -214,6 +213,46 @@ export function OrdersTable({ initialOrders }: { initialOrders: Order[] }) {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="lg:hidden divide-y divide-gray-100">
+        {filteredAndSortedOrders.map((order) => (
+          <Link
+            key={order.id}
+            href={`/admin/orders/${order.id}`}
+            className="block p-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-mono text-gray-600">#{order.id.slice(-8)}</span>
+              <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${statusColor(order.status)}`}>
+                {order.status}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-1">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">{order.user.name}</p>
+                <p className="text-xs text-gray-500 truncate">{order.user.email}</p>
+              </div>
+              <span className="text-sm font-semibold text-gray-900 ml-3 flex-shrink-0">
+                {formatPrice(order.totalAmount)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-xs text-gray-400">
+                {order.items.length} article{order.items.length > 1 ? "s" : ""}
+              </span>
+              <span className="text-xs text-gray-400">
+                {new Date(order.createdAt).toLocaleDateString("fr-FR")}
+              </span>
+            </div>
+          </Link>
+        ))}
+        {filteredAndSortedOrders.length === 0 && (
+          <div className="p-8 text-center text-gray-500 text-sm">
+            {search ? "Aucune commande trouvée pour cette recherche." : "Aucune commande pour le moment."}
+          </div>
+        )}
       </div>
     </div>
   );

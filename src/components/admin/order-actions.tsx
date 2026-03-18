@@ -62,8 +62,8 @@ export function OrderActions({ order }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+    <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Actions</h3>
 
       <div className="flex flex-wrap gap-3">
         {order.status === "PAID" && (

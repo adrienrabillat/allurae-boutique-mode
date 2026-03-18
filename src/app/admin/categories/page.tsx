@@ -11,18 +11,20 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">Catégories</h1>
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Catégories</h1>
         <Link
           href="/admin/categories/new"
-          className="inline-flex items-center gap-2 bg-allurae-terracotta text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors"
+          className="inline-flex items-center gap-2 bg-allurae-terracotta text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors"
         >
           <Plus size={18} />
-          Nouvelle catégorie
+          <span className="hidden sm:inline">Nouvelle catégorie</span>
+          <span className="sm:hidden">Nouvelle</span>
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden sm:block bg-white rounded-xl border border-gray-200 overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
@@ -48,6 +50,27 @@ export default async function AdminCategoriesPage() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="sm:hidden space-y-3">
+        {categories.map((cat) => (
+          <div key={cat.id} className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="text-sm font-medium text-gray-900">{cat.name}</h3>
+              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                {cat._count.products} produit{cat._count.products > 1 ? "s" : ""}
+              </span>
+            </div>
+            <p className="text-xs text-gray-500 font-mono mb-3">{cat.slug}</p>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+              <Link href={`/admin/categories/${cat.id}/edit`} className="text-sm text-allurae-terracotta hover:text-allurae-terracottaDark font-medium">
+                Modifier
+              </Link>
+              <DeleteCategoryButton id={cat.id} name={cat.name} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

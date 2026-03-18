@@ -98,10 +98,10 @@ export default function AdminFaqPage() {
   if (loading) return <div className="p-8">Chargement...</div>;
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">FAQ & Forum</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">FAQ & Forum</h1>
           <p className="text-sm text-gray-500 mt-1">Gérez les questions posées par les utilisateurs</p>
         </div>
       </div>
@@ -114,14 +114,14 @@ export default function AdminFaqPage() {
         ) : (
           <div className="divide-y divide-gray-200">
             {questions.map((q) => (
-              <div key={q.id} className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+              <div key={q.id} className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                       <span className="font-medium text-gray-900">{q.author}</span>
-                      <span className="text-sm text-gray-500">{q.email}</span>
-                      <span className="text-sm text-gray-400">•</span>
-                      <span className="text-sm text-gray-400">
+                      <span className="text-sm text-gray-500 hidden sm:inline">{q.email}</span>
+                      <span className="text-sm text-gray-400 hidden sm:inline">•</span>
+                      <span className="text-xs sm:text-sm text-gray-400">
                         {format(new Date(q.createdAt), "d MMM yyyy 'à' HH:mm", { locale: fr })}
                       </span>
                       {q.isPublished ? (
@@ -136,7 +136,8 @@ export default function AdminFaqPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-900 text-base font-medium mb-4">{q.question}</p>
+                    <p className="text-xs text-gray-500 sm:hidden mb-2">{q.email}</p>
+                    <p className="text-gray-900 text-sm sm:text-base font-medium mb-3 sm:mb-4">{q.question}</p>
                     
                     {q.answer && replyingTo !== q.id ? (
                       <div className="bg-gray-50 p-4 rounded-lg flex items-start gap-3 mt-4">
@@ -177,7 +178,7 @@ export default function AdminFaqPage() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {replyingTo !== q.id && (
                       <button
                         onClick={() => {
@@ -186,22 +187,22 @@ export default function AdminFaqPage() {
                         }}
                         className="p-2 text-allurae-ink hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
                       >
-                        {q.answer ? "Modifier réponse" : "Répondre"}
+                        {q.answer ? "Modifier" : "Répondre"}
                       </button>
                     )}
-                    
+
                     <button
                       onClick={() => handleTogglePublish(q.id, q.isPublished)}
                       className={cn(
                         "p-2 rounded-lg transition-colors text-sm font-medium",
-                        q.isPublished 
-                          ? "text-yellow-600 hover:bg-yellow-50" 
+                        q.isPublished
+                          ? "text-yellow-600 hover:bg-yellow-50"
                           : "text-green-600 hover:bg-green-50"
                       )}
                     >
                       {q.isPublished ? "Masquer" : "Publier"}
                     </button>
-                    
+
                     <button
                       onClick={() => handleDelete(q.id)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"

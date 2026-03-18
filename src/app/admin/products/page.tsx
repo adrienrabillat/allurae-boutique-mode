@@ -12,18 +12,20 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">Produits</h1>
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Produits</h1>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center gap-2 bg-allurae-terracotta text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors"
+          className="inline-flex items-center gap-2 bg-allurae-terracotta text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors"
         >
           <Plus size={18} />
-          Nouveau produit
+          <span className="hidden sm:inline">Nouveau produit</span>
+          <span className="sm:hidden">Nouveau</span>
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden lg:block bg-white rounded-xl border border-gray-200 overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
@@ -84,6 +86,56 @@ export default async function AdminProductsPage() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="lg:hidden space-y-3">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-14 h-14 bg-allurae-sandDark rounded-lg overflow-hidden flex-shrink-0">
+                {product.imageUrl && (
+                  <img src={product.imageUrl} alt="" className="w-full h-full object-cover" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="text-sm font-medium text-gray-900 truncate">{product.name}</h3>
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${
+                    product.active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
+                  }`}>
+                    {product.active ? "Actif" : "Inactif"}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 mt-0.5">{product.category.name}</p>
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="text-sm font-medium text-gray-900">
+                    {product.salePrice ? (
+                      <>
+                        <span className="text-allurae-terracotta">{formatPrice(product.salePrice)}</span>
+                        <span className="line-through text-gray-400 ml-1 text-xs">{formatPrice(product.price)}</span>
+                      </>
+                    ) : (
+                      formatPrice(product.price)
+                    )}
+                  </span>
+                  <span className={`text-xs ${product.stock <= 5 ? "text-red-600 font-medium" : "text-gray-500"}`}>
+                    Stock: {product.stock}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 mt-3 pt-3 border-t border-gray-100">
+              <Link
+                href={`/admin/products/${product.id}/edit`}
+                className="text-sm text-allurae-terracotta hover:text-allurae-terracottaDark font-medium"
+              >
+                Modifier
+              </Link>
+              <DeleteProductButton id={product.id} name={product.name} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

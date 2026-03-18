@@ -27,27 +27,30 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-8">Dashboard</h1>
+      <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-10">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-white rounded-xl p-6 border border-gray-200">
-            <div className="flex items-center gap-3 mb-3">
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${stat.color}`}>
-                <stat.icon size={20} />
+          <div key={stat.label} className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${stat.color}`}>
+                <stat.icon size={18} className="sm:hidden" />
+                <stat.icon size={20} className="hidden sm:block" />
               </div>
-              <span className="text-sm text-gray-500">{stat.label}</span>
+              <span className="text-xs sm:text-sm text-gray-500">{stat.label}</span>
             </div>
-            <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+            <p className="text-lg sm:text-2xl font-semibold text-gray-900">{stat.value}</p>
           </div>
         ))}
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Commandes récentes</h2>
+        <div className="p-4 sm:p-6 border-b border-gray-200">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Commandes récentes</h2>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Desktop table */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
@@ -88,6 +91,37 @@ export default async function AdminDashboard() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="sm:hidden divide-y divide-gray-100">
+          {recentOrders.map((order) => (
+            <div key={order.id} className="p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-mono text-gray-600">#{order.id.slice(-8)}</span>
+                <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${
+                  order.status === "PAID" ? "bg-green-100 text-green-700" :
+                  order.status === "SHIPPED" ? "bg-blue-100 text-blue-700" :
+                  order.status === "PENDING" ? "bg-yellow-100 text-yellow-700" :
+                  "bg-gray-100 text-gray-700"
+                }`}>
+                  {order.status}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-900">{order.user.name}</span>
+                <span className="text-sm font-medium text-gray-900">{formatPrice(order.totalAmount)}</span>
+              </div>
+              <p className="text-xs text-gray-400">
+                {new Date(order.createdAt).toLocaleDateString("fr-FR")}
+              </p>
+            </div>
+          ))}
+          {recentOrders.length === 0 && (
+            <div className="p-8 text-center text-gray-500 text-sm">
+              Aucune commande pour le moment.
+            </div>
+          )}
         </div>
       </div>
     </div>

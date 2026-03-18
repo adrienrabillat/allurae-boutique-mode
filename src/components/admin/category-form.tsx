@@ -48,7 +48,7 @@ export function CategoryForm({ category }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-8 max-w-lg space-y-6">
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-4 sm:p-8 max-w-lg space-y-5 sm:space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
         <input
@@ -83,18 +83,18 @@ export function CategoryForm({ category }: Props) {
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
-      <div className="flex gap-4">
+      <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
         <button
           type="submit"
           disabled={loading}
-          className="bg-allurae-terracotta text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors disabled:opacity-50"
+          className="bg-allurae-terracotta text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-allurae-terracottaDark transition-colors disabled:opacity-50 w-full sm:w-auto"
         >
           {loading ? "..." : isEdit ? "Mettre à jour" : "Créer"}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2.5 rounded-lg text-sm text-gray-600 border border-gray-300 hover:bg-gray-50"
+          className="px-6 py-2.5 rounded-lg text-sm text-gray-600 border border-gray-300 hover:bg-gray-50 w-full sm:w-auto"
         >
           Annuler
         </button>

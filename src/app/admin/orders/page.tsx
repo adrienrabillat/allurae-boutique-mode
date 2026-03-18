@@ -14,7 +14,7 @@ export default async function AdminOrdersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-8">Commandes</h1>
+      <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8">Commandes</h1>
 
       <OrdersTable initialOrders={orders as any} />
     </div>
