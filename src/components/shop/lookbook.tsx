@@ -43,6 +43,9 @@ export function Lookbook() {
                 src={img.src}
                 alt={img.alt}
                 fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                quality={70}
+                loading="lazy"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </motion.div>

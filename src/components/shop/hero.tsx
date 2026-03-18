@@ -12,6 +12,8 @@ export function Hero() {
           src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1600&q=80"
           alt="Yoga au lever du soleil sur la plage"
           fill
+          sizes="100vw"
+          quality={75}
           className="object-cover object-[center_30%] animate-fade-up"
           priority
         />

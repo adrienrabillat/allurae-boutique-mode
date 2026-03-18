@@ -45,6 +45,8 @@ export default function LookbookPage() {
               alt="ALLURAE Lookbook — Ensemble fluide terracotta et sable porté en mouvement dans un décor architectural méditerranéen"
               priority
               fill
+              sizes="(max-width: 768px) 100vw, 58vw"
+              quality={75}
               className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
             />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700" />
@@ -84,6 +86,9 @@ export default function LookbookPage() {
               src="/lookbook2.png"
               alt="ALLURAE Lookbook — Robe longue en lin terracotta, pose contemplative en studio sur fond neutre"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={75}
+              loading="lazy"
               className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
             />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700" />

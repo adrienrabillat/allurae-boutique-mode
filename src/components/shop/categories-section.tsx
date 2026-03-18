@@ -46,6 +46,8 @@ export function CategoriesSection() {
                     src={cat.img}
                     alt={cat.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={75}
                     className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-allurae-ink/80 via-allurae-ink/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />

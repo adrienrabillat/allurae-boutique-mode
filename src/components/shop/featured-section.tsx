@@ -11,6 +11,9 @@ export function FeaturedSection() {
           src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80"
           alt="Plage tropicale turquoise"
           fill
+          sizes="100vw"
+          quality={70}
+          loading="lazy"
           className="object-cover object-[center_40%]"
         />
         <div className="absolute inset-0 bg-allurae-ink/45" />

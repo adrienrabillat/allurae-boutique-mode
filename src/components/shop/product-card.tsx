@@ -45,6 +45,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               src={product.imageUrl}
               alt={product.name}
               fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              quality={75}
               className="object-cover transition-transform duration-600 ease-out group-hover:scale-105"
             />
           ) : (

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 60; // Revalide la homepage toutes les 60 secondes
 
 import { db } from "@/lib/db";
 import { Hero } from "@/components/shop/hero";
